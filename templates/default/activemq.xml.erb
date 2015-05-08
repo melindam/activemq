@@ -142,6 +142,30 @@
         <shutdownHooks>
             <bean xmlns="http://www.springframework.org/schema/beans" class="org.apache.activemq.hooks.SpringContextHook" />
         </shutdownHooks>
+		
+		<% if node['activemq']['simple_auth'] -%>
+	    <plugins>
+		<!-- ADDING FROM SIMPLE AUTHENTICATION EXAMPLE -->
+		<simpleAuthenticationPlugin>
+	    	  <users>
+	            <authenticationUser username="system" password="manager" groups="users,admins"/>
+	            <authenticationUser username="<%= @auth_user %>" password="<%= @auth_password %>" groups="users,admins"/>
+	            <authenticationUser username="user" password="password" groups="users"/>
+	            <authenticationUser username="guest" password="password" groups="guests"/>
+	    	  </users>
+		</simpleAuthenticationPlugin>
+	 	<authorizationPlugin>
+	          <map>
+	              <authorizationMap>
+	                  <authorizationEntries>
+	                      <authorizationEntry queue=">" read="users" write="users" admin="users" />
+			      <authorizationEntry topic=">" read="users" write="users" admin="users" />
+	                  </authorizationEntries>
+	              </authorizationMap>
+	          </map>
+	        </authorizationPlugin>
+	    </plugins>
+	    <% end -%>
 
     </broker>
 
