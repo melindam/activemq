@@ -9,15 +9,15 @@ describe 'ActiveMQ server' do
     expect(service('activemq')).to be_enabled
   end
 
-  describe file('/opt/apache-activemq-5.9.1/conf/activemq.xml') do
+  describe file('/opt/apache-activemq-5.11.0/conf/activemq.xml') do
   	its(:content) {
   		should match /brokerName="vas"/
   	}
   end
 
-  describe file('/opt/apache-activemq-5.9.1/conf/jetty.xml') do
+  describe file('/opt/apache-activemq-5.11.0/conf/jetty.xml') do
   	its(:content) {
-  		should match /property name="port" value="9161"/
+  		should match /property name="port" value="8161"/
   	}
   	its(:content) {
   		should match /property name="contextPath" value="\/VASVASVAS"/
@@ -25,7 +25,7 @@ describe 'ActiveMQ server' do
   	
   end
 
-  describe file('/opt/apache-activemq-5.9.1/conf/jetty-realm.properties') do
+  describe file('/opt/apache-activemq-5.11.0/conf/jetty-realm.properties') do
   	its(:content) {
   		should match /vas: vas/
   		

@@ -22,7 +22,7 @@ default['java']['oracle']['accept_oracle_download_terms'] = true
 # Hard coding for now, need to get found
 default['activemq']['java_home'] = '/usr/lib/jvm/jdk1.8.0_20'
 
-default['activemq']['usejmx'] = true
+default['activemq']['usejmx'] = false
 default['activemq']['run_as_user'] = 'activemq'
 default['activemq']['simple_auth'] = true
 default['activemq']['simple_auth_user'] = 'testuser'
