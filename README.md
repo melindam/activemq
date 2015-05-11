@@ -12,6 +12,7 @@ Tested on Ubuntu 10.04 and CentOS 5.5. Should work on any Debian or Red Hat fami
 
 ### Cookbooks
 - java
+- openssl
 
 
 Attributes
@@ -23,7 +24,14 @@ Attributes
 - `node['activemq']['wrapper']['useDedicatedTaskRunner']` - whether to use the dedicated task runner
 - `node['activemq']['enable_stomp']` - Flag that decides whether or not to use stomp. Note: This is
 only used when `use_default_config` attribute is true.
+- `node['activemq']['enable_amqp']` - Flag that decides whether or not to use amqp connector.
+- `node['activemq']['enable_ssl']` - Flag that decides whether or not to enable SSL connector.
 - `node['activemq']['use_default_config']` - Flag that allows the option to use a basic configuration file
+- `node['activemq']['run_as_user']` - User ID to allow application to run as instead of root.
+- `node['activemq']['simple_auth_user']` - username to connect to queue on openwire transport 
+- `node['activemq']['simple_auth_password']` - password to connect to queue on openwire transport OR will 
+generate OpenSSL passwd
+
 
 
 Usage
