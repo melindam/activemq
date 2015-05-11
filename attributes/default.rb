@@ -28,10 +28,9 @@ default['activemq']['simple_auth'] = true
 default['activemq']['simple_auth_user'] = 'testuser'
 default['activemq']['simple_auth_password'] = ""
 
-
 default['activemq']['mirror']  = 'https://repository.apache.org/content/repositories/releases/org/apache'
 default['activemq']['version'] = '5.11.0'
-default['activemq']['home']  = '/usr/local'
+default['activemq']['home']  = '/opt'
 default['activemq']['wrapper']['max_memory'] = '1024'
 default['activemq']['wrapper']['useDedicatedTaskRunner'] = 'true'
 default['activemq']['wrapper']['keystore_password'] = 'password'
@@ -40,6 +39,8 @@ default['activemq']['wrapper']['keystore_path'] = '%ACTIVEMQ_CONF%/broker.ks'
 default['activemq']['wrapper']['truststore_path'] = '%ACTIVEMQ_CONF%/broker.ts'
 
 default['activemq']['enable_stomp'] = false
+default['activemq']['enable_ssl'] = false
+default['activemq']['enable_amqp'] = false
 # default['activemq']['use_default_config'] = false
 
 #Properties related to 'activemq' 'broker'.
@@ -52,5 +53,3 @@ default['activemq']['admin_console']['credentials']['customize'] = true
 default['activemq']['admin_console']['credentials']['user_name'] = 'admin'
 default['activemq']['admin_console']['credentials']['password'] = 'admin'
 default['activemq']['admin_console']['new_admin_console_name'] = 'admin'
-
-
