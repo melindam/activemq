@@ -40,7 +40,6 @@ ark "apache-activemq" do
   not_if { File.exists?("#{activemq_home}/bin/activemq") }
 end
 
-
 # TODO: make this more robust
 arch = node['kernel']['machine'] == 'x86_64' ? 'x86-64' : 'x86-32'
 
@@ -48,11 +47,18 @@ link '/etc/init.d/activemq' do
   to "#{activemq_home}/bin/linux-#{arch}/activemq"
 end
 
+::Chef::Recipe.send(:include, Opscode::OpenSSL::Password)
+node.set_unless['activemq']['simple_auth_password'] = secure_password 
+
 template "#{activemq_home}/conf/activemq.xml" do
   source   'activemq.xml.erb'
   mode     '0755'
   owner    node['activemq']['run_as_user'] 
   group    node['activemq']['run_as_user'] 
+  variables(
+    :broker_user => node['activemq']['simple_auth_user'],
+    :broker_password => node['activemq']['simple_auth_password']
+  )
   notifies :restart, 'service[activemq]'
 #  only_if  { node['activemq']['use_default_config'] }
 end

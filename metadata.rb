@@ -14,4 +14,5 @@ end
 
 depends 'java', '~> 1.28.0'
 depends 'ark'
+depends 'openssl'
 
