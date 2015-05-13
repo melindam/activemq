@@ -26,7 +26,6 @@ default['activemq']['usejmx'] = false
 default['activemq']['run_as_user'] = 'activemq'
 default['activemq']['simple_auth'] = true
 default['activemq']['simple_auth_user'] = 'testuser'
-default['activemq']['simple_auth_password'] = ""
 
 default['activemq']['mirror']  = 'https://repository.apache.org/content/repositories/releases/org/apache'
 default['activemq']['version'] = '5.11.0'
