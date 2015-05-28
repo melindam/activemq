@@ -16,7 +16,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-default['java']['jdk_version'] = 8
+default['java']['jdk_version'] = 7
 default['java']['install_flavor'] = 'oracle'
 default['java']['oracle']['accept_oracle_download_terms'] = true
 # Hard coding for now, need to get found
