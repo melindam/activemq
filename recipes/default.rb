@@ -67,7 +67,7 @@ template "#{activemq_home}/conf/jetty.xml" do
   mode     '0755'
   owner    node['activemq']['run_as_user']
   group    node['activemq']['run_as_user']
-  notifies :restart, 'service[activemq]'
+  notifies :restart, 'service[activemq]', :delayed
   only_if  { node['activemq']['admin_console']['customize'] }
 end
 
@@ -76,7 +76,7 @@ template "#{activemq_home}/conf/jetty-realm.properties" do
   mode     '0755'
   owner    node['activemq']['run_as_user']
   group    node['activemq']['run_as_user']
-  notifies :restart, 'service[activemq]'
+  notifies :restart, 'service[activemq]', :delayed
   only_if  { node['activemq']['admin_console']['credentials']['customize'] }
 end
 
