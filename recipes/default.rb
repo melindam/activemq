@@ -114,20 +114,34 @@ template "#{activemq_home}/bin/linux/wrapper.conf" do
   notifies :restart, 'service[activemq]', :delayed
 end
 
+template "#{activemq_home}/conf/credentials.properties" do
+  source 'credentials.properties.erb'
+  owner    node['activemq']['run_as_user']
+  group    node['activemq']['run_as_user']
+  mode    '0600'
+  notifies :restart, 'service[activemq]', :delayed
+end
+
 template "#{activemq_home}/conf/login.config" do
   source 'login.config.erb'
+  owner    node['activemq']['run_as_user']
+  group    node['activemq']['run_as_user']
   mode    '0644'
   notifies :restart, 'service[activemq]', :delayed
 end
 
 template "#{activemq_home}/conf/users.properties" do
   source 'users.properties.erb'
+  owner    node['activemq']['run_as_user']
+  group    node['activemq']['run_as_user']
   mode    '0644'
   notifies :restart, 'service[activemq]', :delayed
 end
 
 template "#{activemq_home}/conf/groups.properties" do
   source 'groups.properties.erb'
+  owner    node['activemq']['run_as_user']
+  group    node['activemq']['run_as_user']
   mode    '0644'
   notifies :restart, 'service[activemq]', :delayed
 end

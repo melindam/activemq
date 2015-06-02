@@ -152,16 +152,16 @@
 		<simpleAuthenticationPlugin>
 	    	  <users>
 	            <authenticationUser username="<%= @broker_user %>" password="<%= @broker_password %>" groups="users,admins"/>
-	            <authenticationUser username="system" password="manager" groups="users,admins"/>
-	            <authenticationUser username="guest" password="password" groups="guests"/>
+	            <authenticationUser username="node['activemq']['webconsole']['system_user']" password="node['activemq']['webconsole']['system_password']" groups="users"/>
+	            <!-- authenticationUser username="guest" password="password" groups="guests"/ -->
 	    	  </users>
 		</simpleAuthenticationPlugin>
 	 	<authorizationPlugin>
 	          <map>
 	              <authorizationMap>
 	                  <authorizationEntries>
-	                      	<authorizationEntry queue=">" read="users" write="users" admin="users" />
-			      			<authorizationEntry topic=">" read="users" write="users" admin="users" />
+							<authorizationEntry queue=">" read="users" write="users" admin="users" />
+							<authorizationEntry topic=">" read="users" write="users" admin="users" />
 	                  </authorizationEntries>
 	              </authorizationMap>
 	          </map>
