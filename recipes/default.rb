@@ -73,7 +73,7 @@ end
 
 template "#{activemq_home}/conf/jetty-realm.properties" do
   source   'jetty-realm.properties.erb'
-  mode     '0755'
+  mode     '0700'
   owner    node['activemq']['run_as_user']
   group    node['activemq']['run_as_user']
   notifies :restart, 'service[activemq]', :delayed
