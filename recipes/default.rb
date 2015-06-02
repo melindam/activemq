@@ -60,7 +60,6 @@ template "#{activemq_home}/conf/activemq.xml" do
     :broker_password => node['activemq']['simple_auth_password']
   )
   notifies :restart, 'service[activemq]'
-#  only_if  { node['activemq']['use_default_config'] }
 end
 
 template "#{activemq_home}/conf/jetty.xml" do
