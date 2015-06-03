@@ -152,7 +152,7 @@
 		<simpleAuthenticationPlugin>
 	    	  <users>
 	            <authenticationUser username="<%= @broker_user %>" password="<%= @broker_password %>" groups="users,admins"/>
-	            <authenticationUser username="node['activemq']['web_console']['system_user']" password="node['activemq']['web_console']['system_password']" groups="users"/>
+	            <authenticationUser username="<%= node['activemq']['web_console']['system_user'] %>" password="<%= node['activemq']['web_console']['system_password'] %>" groups="users"/>
 	            <!-- authenticationUser username="guest" password="password" groups="guests"/ -->
 	    	  </users>
 		</simpleAuthenticationPlugin>
