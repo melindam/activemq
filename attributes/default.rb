@@ -55,6 +55,6 @@ default['activemq']['admin_console']['credentials']['password'] = 'admin'
 default['activemq']['admin_console']['new_admin_console_name'] = 'admin'
 
 # Web Console access to components of admin console
-default['activemq']['webconsole']['system_user'] = 'system'
-default['activemq']['webconsole']['system_password'] = 'manager'
+default['activemq']['web_console']['system_user'] = 'system'
+default['activemq']['web_console']['system_password'] = 'manager'
 
