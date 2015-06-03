@@ -52,7 +52,7 @@ node.set_unless['activemq']['simple_auth_password'] = secure_password
 
 template "#{activemq_home}/conf/activemq.xml" do
   source   'activemq.xml.erb'
-  mode     '0755'
+  mode     '0600'
   owner    node['activemq']['run_as_user'] 
   group    node['activemq']['run_as_user'] 
   variables(
