@@ -48,7 +48,9 @@ link '/etc/init.d/activemq' do
 end
 
 ::Chef::Recipe.send(:include, Opscode::OpenSSL::Password)
-node.set_unless['activemq']['simple_auth_password'] = secure_password 
+if node['activemq']['simple_auth_password'].nil?
+  node.set['activemq']['simple_auth_password'] = secure_password 
+end
 
 template "#{activemq_home}/conf/activemq.xml" do
   source   'activemq.xml.erb'
@@ -95,6 +97,25 @@ end
 service 'activemq' do
   supports :restart => true, :status => true
   action   [:enable, :start]
+end
+
+# Supports CentOS 7 systemctl
+systemd_service 'activemq' do
+  description 'Apache ActiveMQ'
+  after %w( network.target syslog.target )
+  install do
+    wanted_by 'multi-user.target'
+  end
+  service do
+    exec_start "#{activemq_home}/bin/linux-#{arch}/activemq start"
+    exec_stop "#{activemq_home}/bin/linux-#{arch}/activemq stop"
+    pid_file "#{activemq_home}/bin/linux-#{arch}/ActiveMQ.pid"
+    user node['activemq']['run_as_user']
+    group node['activemq']['run_as_user']
+    type 'forking'
+    :enable
+  end
+   only_if { node['platform_version'].start_with?('7.') } # systemd
 end
 
 # symlink so the default wrapper.conf can find the native wrapper library
