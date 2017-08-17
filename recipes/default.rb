@@ -61,7 +61,7 @@ template "#{activemq_home}/conf/activemq.xml" do
     :broker_user => node['activemq']['simple_auth_user'],
     :broker_password => node['activemq']['simple_auth_password']
   )
-  notifies :restart, 'service[activemq]'
+  notifies :restart, 'service[activemq]', :delayed
 end
 
 template "#{activemq_home}/conf/jetty.xml" do
@@ -92,11 +92,6 @@ template '/etc/sysconfig/activemq' do
       :java_home => node['activemq']['java_home']
   )
   notifies :restart, 'service[activemq]', :delayed
-end
-
-service 'activemq' do
-  supports :restart => true, :status => true
-  action   [:enable, :start]
 end
 
 # Supports CentOS 7 systemctl
@@ -165,4 +160,8 @@ template "#{activemq_home}/conf/groups.properties" do
   group    node['activemq']['run_as_user']
   mode    '0644'
   notifies :restart, 'service[activemq]', :delayed
+end
+
+service 'activemq' do
+  action   [:enable, :start]
 end
