@@ -85,7 +85,7 @@
             http://activemq.apache.org/jmx.html
         -->
         <managementContext>
-            <managementContext createConnector="<%= node['activemq']['usejmx'] %>"/>
+	     <managementContext createConnector="<%= node['activemq']['usejmx'] %>"/>
         </managementContext>
 
         <!--
@@ -129,16 +129,15 @@
         <transportConnectors>
             <!-- DOS protection, limit concurrent connections to 1000 and frame size to 100MB -->
               <transportConnector name="openwire" uri="tcp://0.0.0.0:61616?maximumConnections=1000&amp;wireformat.maxFrameSize=104857600"/>
-        	<% if node['activemq']['enable_amqp'] -%>              
-              	<transportConnector name="amqp" uri="amqp://0.0.0.0:5672?maximumConnections=1000&amp;wireformat.maxFrameSize=104857600"/>
-		<% end -%>	
-
-            <% if node['activemq']['enable_stomp'] -%>
-            <transportConnector name="stomp" uri="stomp://0.0.0.0:61613?maximumConnections=1000&amp;wireformat.maxFrameSize=104857600"/>
-            <% end -%>
-	    <% if node['activemq']['enable_ssl'] -%>
-		<transportConnector name="ssl" uri="ssl://0.0.0.0:61617?needClientAuth=true&amp;maximumConnections=1000&amp;wireformat.maxFrameSize=104857600" /> 
-	    <% end -%>	
+	<% if node['activemq']['enable_amqp'] -%>
+              <transportConnector name="amqp" uri="amqp://0.0.0.0:5672?maximumConnections=1000&amp;wireformat.maxFrameSize=104857600"/>
+	<% end -%>
+	<% if node['activemq']['enable_stomp'] -%>
+              <transportConnector name="stomp" uri="stomp://0.0.0.0:61613?maximumConnections=1000&amp;wireformat.maxFrameSize=104857600"/>
+	<% end -%>
+	<% if node['activemq']['enable_ssl'] -%>
+	      <transportConnector name="ssl" uri="ssl://0.0.0.0:61617?needClientAuth=true&amp;maximumConnections=1000&amp;wireformat.maxFrameSize=104857600" /> 
+	<% end -%>
         </transportConnectors>
 
         <!-- destroy the spring context on shutdown to stop jetty -->
@@ -159,14 +158,14 @@
 	          <map>
 	              <authorizationMap>
 	                  <authorizationEntries>
-							<authorizationEntry queue=">" read="users" write="users" admin="users" />
-							<authorizationEntry topic=">" read="users" write="users" admin="users" />
+				<authorizationEntry queue=">" read="users" write="users" admin="users" />
+				<authorizationEntry topic=">" read="users" write="users" admin="users" />
 	                  </authorizationEntries>
 	              </authorizationMap>
 	          </map>
 	        </authorizationPlugin>
 	    </plugins>
-	    <% end -%>
+	<% end -%>
 
     </broker>
 
