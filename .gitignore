@@ -10,7 +10,6 @@
 .kitchen.local.yml
 Berksfile.lock
 Gemfile.lock
-
 .bundle/
 .cache/
 .kitchen/
@@ -19,3 +18,4 @@ Gemfile.lock
 bin/
 tmp/
 vendor/
+.project

@@ -18,31 +18,26 @@
 #
 
 include_recipe 'java::default'
+include_recipe 'ark'
 
 tmp = Chef::Config[:file_cache_path]
 version = node['activemq']['version']
 mirror = node['activemq']['mirror']
-activemq_home = "#{node['activemq']['home']}/apache-activemq-#{version}"
+activemq_home = "#{node['activemq']['home']}/apache-activemq"
 
-directory node['activemq']['home'] do
-  recursive true
+user node['activemq']['run_as_user'] do
+  comment "ActiveMQ user"
+  action :create
 end
 
-unless File.exists?("#{activemq_home}/bin/activemq")
-  remote_file "#{tmp}/apache-activemq-#{version}-bin.tar.gz" do
-    source "#{mirror}/activemq/apache-activemq/#{version}/apache-activemq-#{version}-bin.tar.gz"
-    mode   '0644'
-  end
-
-  execute "tar zxf #{tmp}/apache-activemq-#{version}-bin.tar.gz" do
-    cwd node['activemq']['home']
-  end
-end
-
-file "#{activemq_home}/bin/activemq" do
-  owner 'root'
-  group 'root'
-  mode  '0755'
+ark "apache-activemq" do
+  url "#{mirror}/activemq/apache-activemq/#{version}/apache-activemq-#{version}-bin.tar.gz"
+  path node['activemq']['home']
+  version version
+  owner node['activemq']['run_as_user'] 
+  group node['activemq']['run_as_user']
+  action :install
+  not_if { File.exists?("#{activemq_home}/bin/activemq") }
 end
 
 # TODO: make this more robust
@@ -52,18 +47,70 @@ link '/etc/init.d/activemq' do
   to "#{activemq_home}/bin/linux-#{arch}/activemq"
 end
 
-template "#{activemq_home}/conf/activemq.xml" do
-  source   'activemq.xml.erb'
-  mode     '0755'
-  owner    'root'
-  group    'root'
-  notifies :restart, 'service[activemq]'
-  only_if  { node['activemq']['use_default_config'] }
+::Chef::Recipe.send(:include, Opscode::OpenSSL::Password)
+if node['activemq']['simple_auth_password'].nil?
+  node.set['activemq']['simple_auth_password'] = secure_password 
 end
 
-service 'activemq' do
-  supports :restart => true, :status => true
-  action   [:enable, :start]
+template "#{activemq_home}/conf/activemq.xml" do
+  source   'activemq.xml.erb'
+  mode     '0600'
+  owner    node['activemq']['run_as_user'] 
+  group    node['activemq']['run_as_user'] 
+  variables(
+    :broker_user => node['activemq']['simple_auth_user'],
+    :broker_password => node['activemq']['simple_auth_password']
+  )
+  notifies :restart, 'service[activemq]', :delayed
+end
+
+template "#{activemq_home}/conf/jetty.xml" do
+  source   'jetty.xml.erb'
+  mode     '0755'
+  owner    node['activemq']['run_as_user']
+  group    node['activemq']['run_as_user']
+  notifies :restart, 'service[activemq]', :delayed
+  only_if  { node['activemq']['admin_console']['customize'] }
+end
+
+template "#{activemq_home}/conf/jetty-realm.properties" do
+  source   'jetty-realm.properties.erb'
+  mode     '0700'
+  owner    node['activemq']['run_as_user']
+  group    node['activemq']['run_as_user']
+  notifies :restart, 'service[activemq]', :delayed
+  only_if  { node['activemq']['admin_console']['credentials']['customize'] }
+end
+
+template '/etc/sysconfig/activemq' do
+  source 'sysconfig.erb'
+  owner 'root'
+  group 'root'
+  mode '0755'
+  variables( 
+      :run_as_user => node['activemq']['run_as_user'],
+      :java_home => node['activemq']['java_home']
+  )
+  notifies :restart, 'service[activemq]', :delayed
+end
+
+# Supports CentOS 7 systemctl
+systemd_service 'activemq' do
+  description 'Apache ActiveMQ'
+  after %w( network.target syslog.target )
+  install do
+    wanted_by 'multi-user.target'
+  end
+  service do
+    exec_start "#{activemq_home}/bin/linux-#{arch}/activemq start"
+    exec_stop "#{activemq_home}/bin/linux-#{arch}/activemq stop"
+    pid_file "#{activemq_home}/bin/linux-#{arch}/ActiveMQ.pid"
+    user node['activemq']['run_as_user']
+    group node['activemq']['run_as_user']
+    type 'forking'
+    :enable
+  end
+   only_if { node['platform_version'].start_with?('7.') } # systemd
 end
 
 # symlink so the default wrapper.conf can find the native wrapper library
@@ -80,5 +127,41 @@ end
 template "#{activemq_home}/bin/linux/wrapper.conf" do
   source   'wrapper.conf.erb'
   mode     '0644'
-  notifies :restart, 'service[activemq]'
+  notifies :restart, 'service[activemq]', :delayed
+end
+
+template "#{activemq_home}/conf/credentials.properties" do
+  source 'credentials.properties.erb'
+  owner    node['activemq']['run_as_user']
+  group    node['activemq']['run_as_user']
+  mode    '0600'
+  notifies :restart, 'service[activemq]', :delayed
+end
+
+template "#{activemq_home}/conf/login.config" do
+  source 'login.config.erb'
+  owner    node['activemq']['run_as_user']
+  group    node['activemq']['run_as_user']
+  mode    '0644'
+  notifies :restart, 'service[activemq]', :delayed
+end
+
+template "#{activemq_home}/conf/users.properties" do
+  source 'users.properties.erb'
+  owner    node['activemq']['run_as_user']
+  group    node['activemq']['run_as_user']
+  mode    '0644'
+  notifies :restart, 'service[activemq]', :delayed
+end
+
+template "#{activemq_home}/conf/groups.properties" do
+  source 'groups.properties.erb'
+  owner    node['activemq']['run_as_user']
+  group    node['activemq']['run_as_user']
+  mode    '0644'
+  notifies :restart, 'service[activemq]', :delayed
+end
+
+service 'activemq' do
+  action   [:enable, :start]
 end
