@@ -2,6 +2,10 @@ activemq Cookbook CHANGELOG
 ===========================
 This file is used to list changes made in each version of the activemq cookbook.
 
+v1.3.7 (scottymarshall)
+-----------------------
+- Removed java dependency on version
+
 v1.3.6 (melindam)
 -----------------
 - changing node set values for attributes
