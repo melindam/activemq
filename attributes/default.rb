@@ -16,17 +16,18 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-default['java']['jdk_version'] = 8
+default['java']['jdk_version'] = 7
 default['java']['install_flavor'] = 'oracle'
 default['java']['oracle']['accept_oracle_download_terms'] = true
 # Hard coding for now, need to get found
-default['activemq']['java_home'] = '/usr/lib/jvm/jdk1.8.0_20'
+default['activemq']['java_home'] = '/usr/lib/jvm/jdk1.7.0_67'
 
 default['activemq']['usejmx'] = false
 default['activemq']['run_as_user'] = 'activemq'
 default['activemq']['simple_auth'] = true
 default['activemq']['simple_auth_user'] = 'testuser'
-default['activemq']['simple_auth_password'] = ""
+# uncomment and set password, otherwise will be OpenSSL secure generated password
+# default ['activemq']['simple_auth_password'] = 'somePassword'
 
 default['activemq']['mirror']  = 'https://repository.apache.org/content/repositories/releases/org/apache'
 default['activemq']['version'] = '5.11.0'
@@ -41,7 +42,6 @@ default['activemq']['wrapper']['truststore_path'] = '%ACTIVEMQ_CONF%/broker.ts'
 default['activemq']['enable_stomp'] = false
 default['activemq']['enable_ssl'] = false
 default['activemq']['enable_amqp'] = false
-# default['activemq']['use_default_config'] = false
 
 #Properties related to 'activemq' 'broker'.
 default['activemq']['broker_name'] = 'localhost'
@@ -53,3 +53,8 @@ default['activemq']['admin_console']['credentials']['customize'] = true
 default['activemq']['admin_console']['credentials']['user_name'] = 'admin'
 default['activemq']['admin_console']['credentials']['password'] = 'admin'
 default['activemq']['admin_console']['new_admin_console_name'] = 'admin'
+
+# Web Console access to components of admin console
+default['activemq']['web_console']['system_user'] = 'system'
+default['activemq']['web_console']['system_password'] = 'manager'
+

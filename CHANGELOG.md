@@ -2,6 +2,11 @@ activemq Cookbook CHANGELOG
 ===========================
 This file is used to list changes made in each version of the activemq cookbook.
 
+v1.3.6 (melindam)
+-----------------
+- changing node set values for attributes
+- including systemd for CentOS7 systemctl stop/start command
+
 v1.3.5 (melindam)
 ------------------
 - update to version 5.11.0
