@@ -4,7 +4,7 @@ maintainer_email 'cookbooks@opscode.com'
 license          'Apache 2.0'
 description      'Installs activemq and sets it up as service'
 long_description IO.read(File.join(File.dirname(__FILE__), 'README.md'))
-version          '1.3.6'
+version          '1.3.7'
 source_url       "https://github.com/opscode-cookbooks/activemq"
 issues_url       "https://github.com/opscode-cookbooks/activemq/issues"
 
@@ -12,7 +12,7 @@ issues_url       "https://github.com/opscode-cookbooks/activemq/issues"
   supports os
 end
 
-depends 'java', '~> 1.28.0'
+depends 'java'
 depends 'ark'
 depends 'openssl'
 
