@@ -2,9 +2,10 @@ activemq Cookbook CHANGELOG
 ===========================
 This file is used to list changes made in each version of the activemq cookbook.
 
-v1.3.7 (scottymarshall)
+v1.3.7 
 -----------------------
-- Removed java dependency on version
+- Removed java dependency on version (scottymarshall)
+- commented out default passwords for console and system (melindam)
 
 v1.3.6 (melindam)
 -----------------

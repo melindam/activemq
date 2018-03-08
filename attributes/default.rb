@@ -51,10 +51,10 @@ default['activemq']['admin_console']['customize'] = false
 default['activemq']['admin_console']['port'] = '8161'
 default['activemq']['admin_console']['credentials']['customize'] = true
 default['activemq']['admin_console']['credentials']['user_name'] = 'admin'
-default['activemq']['admin_console']['credentials']['password'] = 'admin'
+#default['activemq']['admin_console']['credentials']['password'] = 'admin'
 default['activemq']['admin_console']['new_admin_console_name'] = 'admin'
 
 # Web Console access to components of admin console
 default['activemq']['web_console']['system_user'] = 'system'
-default['activemq']['web_console']['system_password'] = 'manager'
+#default['activemq']['web_console']['system_password'] = 'manager'
 
